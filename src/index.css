@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+body.dark-mode input,
+body.dark-mode button {
+  background-color: #1e1e1e;
+  color: #eee;
+  border-color: #444;
+}

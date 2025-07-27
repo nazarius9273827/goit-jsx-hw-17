@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const ContactsContext = createContext();
 
@@ -11,44 +12,15 @@ const initialContacts = [
 ];
 
 export const ContactsProvider = ({ children }) => {
-  const [contacts, setContacts] = useState(() => {
-    const saved = localStorage.getItem('contacts');
-    return saved ? JSON.parse(saved) : initialContacts;
-  });
-
+  const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const addContact = (name, number) => {
-    const isDuplicate = contacts.some(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (isDuplicate) {
-      alert(`${name} is already in contacts`);
-      return;
-    }
-
-    const newContact = { id: nanoid(), name, number };
-    setContacts(prev => [newContact, ...prev]);
-  };
-
-  const deleteContact = id => {
-    setContacts(prev => prev.filter(contact => contact.id !== id));
-  };
+  const addContact = (name, number) => { /* ... */ };
+  const deleteContact = id => { /* ... */ };
 
   return (
     <ContactsContext.Provider
-      value={{
-        contacts,
-        filter,
-        addContact,
-        deleteContact,
-        setFilter,
-      }}
+      value={{ contacts, filter, addContact, deleteContact, setFilter }}
     >
       {children}
     </ContactsContext.Provider>
